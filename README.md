@@ -156,7 +156,7 @@ This are three entry points <b>Prompt</b> make for this project.
 <!--
 Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 -->
-svjack - svjackbt@gmail.com - ehangzhou@outlook.com
+svjack - https://huggingface.co/svjack - svjackbt@gmail.com - ehangzhou@outlook.com
 
 <!--
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
