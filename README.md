@@ -61,6 +61,16 @@ pip install -r req0.txt
 pip install -r req1.txt
 ```
 ### Instructions
+I recommand run the demo on a computer with gpu:
+If you have gpu: change the first line of [predict_t5_choose_simple.py](predict_t5_choose_simple.py) from
+```python
+device = "cpu"
+```
+to
+```python
+device = "cuda:0"
+```
+Then
 ```python
 from main import *
 
