@@ -388,7 +388,7 @@ def generate_pair(question, max_times = 5,
         req_l_mapped = shorten_exists(req_l_mapped)
     return req_l_mapped ,ori_l, req_l, l_labled, pair_list_glm_list, ori_pair_list_glm_list
 
-def generate_seq(question, max_times = 5, single_step_times = 1, exist_f = True):
+def generate_seq(question, max_times = 5, single_step_times = 1, exist_f = True, break_length = 256):
     from copy import deepcopy
     req = []
     for i in tqdm(range(max_times)):
@@ -399,6 +399,8 @@ def generate_seq(question, max_times = 5, single_step_times = 1, exist_f = True)
             req.append("[SEP]".join(a))
         else:
             req.append("[SEP]".join([req[-1]] + a[1:]))
+        if len(req[-1]) >= break_length:
+            break
     req = req[-1].split("[SEP]")
     req = list(map(repeat_to_one, req))
     if exist_f:
