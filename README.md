@@ -111,7 +111,7 @@ The above three models are released in [HuggingFace](https://huggingface.co), li
 They all build above Chinese, and use [facebook m2m_100_1.2B](https://huggingface.co/facebook/m2m100_1.2B) translator make them support Multilanguage domain.
 
 ### Prompt --- basic concept throughout the project
-This are three entry points <b>Prompt</b> make for this project.
+There are three entry points <b>Prompt</b> make for this project.
 
 |Prompt category|Effect parts|Idea source|Prompt format in English|Prompt format in Chinese|
 |---------|--------|-------|--------|-------|
