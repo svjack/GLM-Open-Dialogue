@@ -33,9 +33,24 @@ def demo_func(question, lang, max_times):
         "Dialogue Context": l
     }
 
+
 if __name__ == "__main__":
     #### Chinese samples
+    l = generate_func(*["程序员要掌握哪些技能", 5])
+    print(l)
+    l = generate_func(*["程序员要掌握哪些技能", 5])
+    print(l)
+    l = generate_func(*["你对《三国演义》感兴趣吗?", 10])
+    print(l)
+    l = generate_func(*["谁能让美国再一次伟大?", 10])
+    print(l)
+    l = generate_func(*["眼皮埋线多少钱?", 10])
+    print(l)
 
     #### Multi-Language samples
-
-    pass
+    l = demo_func(*example_sample[0])
+    print(l)
+    l = demo_func(*example_sample[1])
+    print(l)
+    l = demo_func(*example_sample[2])
+    print(l)
