@@ -4,3 +4,4 @@ simplet5
 tqdm
 easynmt
 gradio
+sqlite-utils
