@@ -1,10 +1,7 @@
 import requests
 from easynmt import EasyNMT
 import os
-
 trans_model = EasyNMT("m2m_100_1.2B")
-
-import gradio as gr
 
 def translate_func(src_question, src_lang, tgt_lang):
     assert type(src_question) == type("")
