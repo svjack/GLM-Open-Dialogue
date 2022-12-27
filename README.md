@@ -75,6 +75,7 @@ Then
 from main import *
 
 #### English Usage
+##### max_times set to 10 will take more times than 2, and more outputs 
 demo_func(*["Which keyboard do you prefer?", "en", 2])
 demo_func(*["Which keyboard do you prefer?", "en", 10])
 #### Japanese Usage
