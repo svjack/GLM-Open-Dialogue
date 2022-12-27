@@ -1,0 +1,6 @@
+pandas
+rapidfuzz
+simplet5
+tqdm
+easynmt
+flagai
