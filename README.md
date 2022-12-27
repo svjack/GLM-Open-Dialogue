@@ -95,7 +95,7 @@ generate_func(*["谁能让美国再一次伟大?", 10])
 Many this kinds models focus train a generate model on some specific datasets, This may constraints from datasets and pretrained models, When faced with a open domain with a broad breadth of knowledge, the generator may has more risk of cause Blandness Problem by bland answers or give some response lack of vividness. </br>
 This project deal with this kinds of problems by a unsupervised combination method. And decompose this problem to three steps:
 * 1 Self-train a Open-Domain Dialogue generator on a small dataset from scratch and use it as a <b>"Construct Generator"</b>
-* 2 Use [GLM](https://github.com/FlagAI-Open/FlagAI/blob/master/examples/glm_blank_filling/glm_generate_samples.py) as <b>"Knowledge Generator"</b>
+* 2 Use [FlagAI](https://github.com/FlagAI-Open/FlagAI)'s [GLM](https://github.com/FlagAI-Open/FlagAI/blob/master/examples/glm_blank_filling/glm_generate_samples.py) as <b>"Knowledge Generator"</b>
 * 3 Use a self-trained <b>"Context Discriminer"</b> to combine above two generators. <br/>
 
 There is no high requirement for the accuracy of the "Construct Generator".<br/>
