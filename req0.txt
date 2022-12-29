@@ -5,3 +5,5 @@ tqdm
 easynmt
 gradio
 sqlite-utils
+paddlepaddle
+paddlenlp
