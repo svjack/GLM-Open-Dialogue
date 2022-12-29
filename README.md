@@ -33,22 +33,22 @@ Following is a English example compare the output of DialoGPT and GLM(this proje
 ||| This is so difficult !|
 |||You have no idea how hard it is to be a millionaire and happy . There is a reason the rich have a lot of money|
 |GLM |Does money buy happiness? | Can money buy happiness?|
-|||Yes is.How about you?|
-|||It is happiness, ha.|
-|||If you fight for yourself, you will be happy.|
-|||Oh, I got it.How about you?|
-|||and happiness.|
-|||Everyone has a different definition of happiness.|
-|||Money cannot buy happiness, money can buy happiness.|
+|||Yes, what about you?That is happiness.|
+|||Oh yeah!|
+|||You will be happy.|
+|||Oh, I got it.How are you happy?|
+|||I think no.|
+|||Everyone has different definitions of happiness, and money cannot buy happiness.|
 |DialoGPT |what is the meaning of life ? | The  meaning  is  to  be  with  your  family  and friends .|
 |||I’m going to guess :  It means that your parents and friends have loved you . That’s the meaning , I believe .|
 |||I think  the  meaning  is  to  make  sure  you’re alive when you die . So you’ll be with your family , friends , and yourself .|
 |||It’s not , but thanks for trying to help .|
-GLM |what is the meaning of life ? | You just like life.|
-|||The answer, of course, is life itself.|
-|||Has anyone said that life has no meaning?|
-|||Yes you are right.What do I like the most?|
-|||Do something meaningful.|
+GLM |what is the meaning of life ? | You just like life, answer? |
+|||of course is.|
+|||Who said life itself?|
+|||Does life have no meaning?|
+|||Yes is.|
+|||What do you like to do with me that is meaningful?|
 |||Enjoy every moment of your life and feel meaningful.|
 
 ## HuggingFace Space demonstration
@@ -94,30 +94,33 @@ generate_func(*["谁能让美国再一次伟大?", 10])
 ## Construction
 ### Migrate GLM to Open-Domain Dialogue Generation domain
 Many this kinds models focus train a generate model on some specific datasets, This may constraints from datasets and pretrained models, When faced with a open domain with a broad breadth of knowledge, the generator may has more risk of cause Blandness Problem by bland answers or give some response lack of vividness. </br>
-This project deal with this kinds of problems by a unsupervised combination method. And decompose this problem to three steps:
+This project deal with this kinds of problems by a unsupervised combination method. And decompose this problem to four steps:
 * 1 Self-train a Open-Domain Dialogue generator on a small dataset from scratch and use it as a <b>"Construct Generator"</b>
 * 2 Use [FlagAI](https://github.com/FlagAI-Open/FlagAI)'s [GLM](https://github.com/FlagAI-Open/FlagAI/blob/master/examples/glm_blank_filling/glm_generate_samples.py) as <b>"Knowledge Generator"</b>
 * 3 Use a self-trained <b>"Context Discriminer"</b> to combine above two generators. <br/>
+* 4 Use a self-trained <b>"Context Reconstructor"</b> to reconstruct the context. <br/>
 
 There is no high requirement for the accuracy of the "Construct Generator".<br/>
 
-The above three models are released in [HuggingFace](https://huggingface.co), list in the below sheet.
+The above four models are released in [HuggingFace](https://huggingface.co), list in the below sheet.
 
 |Role in Project |HuggingFace link| Contributor |
 |---------|--------|-------|
 |Construct Generator| https://huggingface.co/svjack/T5-daliy-dialogue | https://huggingface.co/svjack |
 |Knowledge Generator| https://huggingface.co/BAAI/glm-large-chinese | https://huggingface.co/BAAI |
 |Context Discriminer| https://huggingface.co/svjack/T5-dialogue-choose | https://huggingface.co/svjack |
+|Context Reconstructor| https://huggingface.co/svjack/T5-dialogue-collect | https://huggingface.co/svjack |
 
 They all build above Chinese, and use [facebook m2m_100_1.2B](https://huggingface.co/facebook/m2m100_1.2B) translator make them support Multilanguage domain.
 
 ### Prompt --- basic concept throughout the project
-There are three entry points <b>Prompt</b> make for this project.
+There are four entry points <b>Prompt</b> make for this project.
 
 |Prompt category|Effect parts|Idea source|Prompt format in English|Prompt format in Chinese|
 |---------|--------|-------|--------|-------|
 |Task Oriented Prompt Format for QA Blank Infilling|[GLM](https://github.com/FlagAI-Open/FlagAI/blob/master/examples/glm_blank_filling/glm_generate_samples.py)|build in GLM|Question: Is reading good for your grow up? Answer: [MASK]|问题: 阅读对于成长有好处吗？ 回答: [MASK]|
 |Task Oriented Prompt Format for choose best|[Context Discriminer](https://huggingface.co/svjack/T5-dialogue-choose)|[Bigscience-mt0](https://huggingface.co/bigscience/mt0-large)|According to the following context, choose the optimal follow-up sentence Context: {}\n{}Answer:|根据如下上下文，选择最优的后续句子 上下文：{}\n{}答案：|
+|Task Oriented Prompt Format for reconstruct context|[Context Reconstructor](https://huggingface.co/svjack/T5-dialogue-collect)|[Bigscience-mt0](https://huggingface.co/bigscience/mt0-large)|According to the following context, reconstruct the Context: {}\n{}Answer:|根据下面的上下文进行分段： 上下文：{}\n{}答案：|
 |Quality Oriented Negative Prompt|negative_prompts in [predict_t5_choose_simple.py](predict_t5_choose_simple.py)|[Stable Diffusion](https://minimaxir.com/2022/11/stable-diffusion-negative-prompt/)|[Yes, I don't know, Who knows]|[是的,怎么知道]|
 
 
@@ -141,15 +144,14 @@ There are three entry points <b>Prompt</b> make for this project.
 |||誰もが京都よりはマシだと思っている。また、日本の都市|
 |||個人的には京都の方がお得だと思います。|
 |||知っている。あなたはエッフェル塔の頂上に行ったことがありますか?|
-|Chinese |你对《三国演义》感兴趣吗?|是的,我。,喜欢各种人物,你怎么样?|
-|||我很喜欢 三国啊。|
-|||有一点喜欢,但是不是很了解,|
-|||这.就是三国啊。|
-|||嗯其实我对《三国演义》没什么兴趣因为就是一部!|
-|||对啦,我喜欢各种人物!|
-|||感兴趣吧?不过,我高中时候看的《三国演义》,虽然现在还是小学生,但是也喜欢玩杀,里面武将,人物!当然,最,以及故事,比如关羽,貂蝉。|
-|||《三国志》是一部不错的史书,里面英雄人物塑造也很出色。值得一看!|
-|||抖机灵《三国演义》是一部伟大的著作,里面有很多故事情节,历史上有名英雄人物,如关羽,|
+|Chinese |你对《三国演义》感兴趣吗?|是的。我喜欢各种人物,你怎么样?|
+|||不喜欢看。不过,我抖机灵,《三国演义》是一本很好看的书|
+|||当然,很感兴趣。喜欢三国|
+|||我非常喜欢《三国演义》,因为里面有故事《三国演义》|
+|||三国志,你读过吗?有看过,不过不感兴趣。|
+|||因为很多小说都是虚构的人物,作者编造,而且看多了才《三国演义》,所以一般没什么感觉,但是真的必要吗?|
+|||三国志,我读过里面的人物描写,让非常喜欢很形象,有血有肉真实罗贯中历史是,所以也了不少传记。|
+|||《三国演义》很多特别生动诸葛亮|
 
 <!-- CONTACT -->
 ## Contact
