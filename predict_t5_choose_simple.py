@@ -14,6 +14,8 @@ negative_prompts = [
     ] + ["不知道", "不想" , "不会", "怎么知道", "你说呢", "是吗？", "不", "否定的",] + \
     ["一", "1", "二", "2",]
 
+from fix_dialogue_context import *
+
 from simplet5 import SimpleT5
 import os
 import sys
@@ -23,9 +25,12 @@ import re
 import pathlib
 import shutil
 from tqdm import tqdm
+from copy import deepcopy
 
 import pandas as pd
 import numpy as np
+import jieba.posseg as posseg
+#import jionlp as jio
 
 
 model = SimpleT5()
@@ -46,6 +51,16 @@ if device.startswith("cuda"):
 else:
     choose_model.load_model(
     model_dir = "svjack/T5-dialogue-choose",
+    use_gpu = False)
+
+collect_model = SimpleT5()
+if device.startswith("cuda"):
+    collect_model.load_model(
+    model_dir = "svjack/T5-dialogue-collect-v0",
+    use_gpu = True)
+else:
+    collect_model.load_model(
+    model_dir = "svjack/T5-dialogue-collect-v0",
     use_gpu = False)
 
 import torch
@@ -388,7 +403,74 @@ def generate_pair(question, max_times = 5,
         req_l_mapped = shorten_exists(req_l_mapped)
     return req_l_mapped ,ori_l, req_l, l_labled, pair_list_glm_list, ori_pair_list_glm_list
 
-def generate_seq(question, max_times = 5, single_step_times = 1, exist_f = True, break_length = 256):
+def add_book_by_ner(source_list, list_for_add):
+    assert type(source_list) == type([])
+    assert type(list_for_add) == type([])
+    all_books = list(set(reduce(lambda a, b: a + b ,
+                       map(lambda x: re.findall("《(.*)》", x), source_list))))
+    all_books = list(filter(lambda x: x, all_books))
+    if not all_books:
+        return list_for_add
+    def single_rp(x):
+        x = x.replace("《", "").replace("》", "")
+        for xx in sorted(all_books, key = len, reverse = True):
+            if xx in x:
+                x = x.replace(xx, "《{}》".format(xx))
+        return x
+    list_for_add = list(map(single_rp, list_for_add))
+    return list_for_add
+
+def process_one_sent(input_):
+    assert type(input_) == type("")
+    input_ = " ".join(map(lambda y: y.word.strip() ,filter(lambda x: x.flag != "x" ,
+    posseg.lcut(input_))))
+    return input_
+
+def predict_split(sp_list, cut_tokens = True):
+    assert type(sp_list) == type([])
+    if cut_tokens:
+        src_text = '''
+            根据下面的上下文进行分段：
+            上下文：{}
+            答案：
+            '''.format(" ".join(
+            map(process_one_sent ,sp_list)
+            ))
+    else:
+        src_text = '''
+            根据下面的上下文进行分段：
+            上下文：{}
+            答案：
+            '''.format("".join(sp_list))
+    print(src_text)
+    pred = collect_model.predict(src_text)[0]
+    pred = list(filter(lambda y: y ,map(lambda x: x.strip() ,pred.split("分段:"))))
+    return pred
+
+def dialogue_context_collect_func(input_):
+    assert type(input_) == type([])
+    ori_input = deepcopy(input_)
+    if not input_:
+        return []
+    input_ = deepcopy(input_)
+    if len(input_) >= 2:
+        input_1 = dialogue_context_fix_func(input_[1:])
+        input_1 = predict_split(input_1)
+        assert type(input_1) == type([])
+        assert type(input_[0]) == type("")
+        input_ = [input_[0]] + input_1
+    #sp_list = input_
+    #input_ = predict_split(sp_list)
+    if len(input_) >= 2:
+        input_1 = dialogue_context_fix_func(input_[1:])
+        assert type(input_1) == type([])
+        assert type(input_[0]) == type("")
+        input_ = [input_[0]] + input_1
+    input_ = add_book_by_ner(ori_input, input_)
+    return input_
+
+def generate_seq(question, max_times = 5, single_step_times = 1,
+exist_f = True, break_length = 256, fix_it = True):
     from copy import deepcopy
     req = []
     for i in tqdm(range(max_times)):
@@ -405,7 +487,10 @@ def generate_seq(question, max_times = 5, single_step_times = 1, exist_f = True,
     req = list(map(repeat_to_one, req))
     if exist_f:
         req = shorten_exists(req)
+    if fix_it:
+        req = dialogue_context_collect_func(req)
     return req
+
 
 '''
 a_seq = generate_seq("程序员要掌握哪些技能?")
