@@ -489,8 +489,9 @@ exist_f = True, break_length = 256, fix_it = True):
         req = shorten_exists(req)
     if fix_it:
         req = dialogue_context_collect_func(req)
+    if exist_f:
+        req = shorten_exists(req)
     return req
-
 
 '''
 a_seq = generate_seq("程序员要掌握哪些技能?")
