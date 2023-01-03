@@ -56,11 +56,11 @@ else:
 collect_model = SimpleT5()
 if device.startswith("cuda"):
     collect_model.load_model(
-    model_dir = "svjack/T5-dialogue-collect-v0",
+    model_dir = "svjack/T5-dialogue-collect-v4",
     use_gpu = True)
 else:
     collect_model.load_model(
-    model_dir = "svjack/T5-dialogue-collect-v0",
+    model_dir = "svjack/T5-dialogue-collect-v4",
     use_gpu = False)
 
 import torch
