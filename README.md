@@ -120,7 +120,7 @@ There are four entry points <b>Prompt</b> make for this project.
 |---------|--------|-------|--------|-------|
 |Task Oriented Prompt Format for QA Blank Infilling|[GLM](https://github.com/FlagAI-Open/FlagAI/blob/master/examples/glm_blank_filling/glm_generate_samples.py)|build in GLM|Question: Is reading good for your grow up? Answer: [MASK]|问题: 阅读对于成长有好处吗？ 回答: [MASK]|
 |Task Oriented Prompt Format for choose best|[Context Discriminer](https://huggingface.co/svjack/T5-dialogue-choose)|[Bigscience-mt0](https://huggingface.co/bigscience/mt0-large)|According to the following context, choose the optimal follow-up sentence Context: {}\n{}Answer:|根据如下上下文，选择最优的后续句子 上下文：{}\n{}答案：|
-|Task Oriented Prompt Format for reconstruct context|[Context Reconstructor](https://huggingface.co/svjack/T5-dialogue-collect)|[Bigscience-mt0](https://huggingface.co/bigscience/mt0-large)|According to the following context, reconstruct the Context: {}\n{}Answer:|根据下面的上下文进行分段： 上下文：{}\n{}答案：|
+|Task Oriented Prompt Format for reconstruct context|[Context Reconstructor](https://huggingface.co/svjack/T5-dialogue-collect)|[Bigscience-mt0](https://huggingface.co/bigscience/mt0-large)|According to the following context, reconstruct the Context: {}\n{}Answer:|根据下面的上下文进行分段： 上下文：{} 答案：|
 |Quality Oriented Negative Prompt|negative_prompts in [predict_t5_choose_simple.py](predict_t5_choose_simple.py)|[Stable Diffusion](https://minimaxir.com/2022/11/stable-diffusion-negative-prompt/)|[Yes, I don't know, Who knows]|[是的,怎么知道]|
 
 
@@ -144,14 +144,12 @@ There are four entry points <b>Prompt</b> make for this project.
 |||誰もが京都よりはマシだと思っている。また、日本の都市|
 |||個人的には京都の方がお得だと思います。|
 |||知っている。あなたはエッフェル塔の頂上に行ったことがありますか?|
-|Chinese |你对《三国演义》感兴趣吗?|是的。我喜欢各种人物,你怎么样?|
-|||不喜欢看。不过,我抖机灵,《三国演义》是一本很好看的书|
-|||当然,很感兴趣。喜欢三国|
-|||我非常喜欢《三国演义》,因为里面有故事《三国演义》|
-|||三国志,你读过吗?有看过,不过不感兴趣。|
-|||因为很多小说都是虚构的人物,作者编造,而且看多了才《三国演义》,所以一般没什么感觉,但是真的必要吗?|
-|||三国志,我读过里面的人物描写,让非常喜欢很形象,有血有肉真实罗贯中历史是,所以也了不少传记。|
-|||《三国演义》很多特别生动诸葛亮|
+|Chinese |你对《三国演义》感兴趣吗?|是的,我喜欢各种人物。你觉得怎么样?|
+|||我觉得可以,因为太无聊了。我喜欢《三国演义》,但是没时间去看。|
+|||抖机灵,我喜欢历史,《三国志》。这些经典读起来不枯燥,有很强的吸引力,很适合初学者。|
+|||哦,我也喜欢历史。你有兴趣吗?|
+|||看历史,我感兴趣。|
+|||毕竟,《三国志》是经典,但是要看清人物才能更好地理解人物性格。|
 
 <!-- CONTACT -->
 ## Contact
