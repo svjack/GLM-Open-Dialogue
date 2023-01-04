@@ -6,4 +6,4 @@ easynmt
 gradio
 sqlite-utils
 paddlepaddle
-paddlenlp
+paddlenlp==2.4.1
