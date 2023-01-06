@@ -151,6 +151,12 @@ There are four entry points <b>Prompt</b> make for this project.
 |||看历史,我感兴趣。|
 |||毕竟,《三国志》是经典,但是要看清人物才能更好地理解人物性格。|
 
+## Sample Dataset Generated
+A sample dataset generated in Chinese has been uploaded to Huggingface Hub.<br/>
+[GLM-Open-Dialogue-Chinese-samples](https://huggingface.co/datasets/svjack/GLM-Open-Dialogue-Chinese-samples)<br/>
+The questions in this dataset may have some difficulties for extractive question answering systems which provide context.
+If you try some other questions(harder or simple), the outputs may be different.
+
 <!-- CONTACT -->
 ## Contact
 
