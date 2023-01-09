@@ -481,7 +481,7 @@ def dialogue_context_collect_func(input_):
     input_ = add_book_by_ner(ori_input, input_)
     return input_
 
-def generate_seq(question, max_times = 5, single_step_times = 1,
+def generate_seq(question, max_times = 10, single_step_times = 1,
 exist_f = True, break_length = 256, fix_it = True):
     from copy import deepcopy
     req = []
