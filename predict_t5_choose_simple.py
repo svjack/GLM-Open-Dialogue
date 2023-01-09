@@ -1,4 +1,5 @@
 device = "cpu"
+#device = "cuda:0"
 assert device.startswith("cpu") or device.startswith("cuda")
 
 negative_prompts = [
@@ -56,11 +57,11 @@ else:
 collect_model = SimpleT5()
 if device.startswith("cuda"):
     collect_model.load_model(
-    model_dir = "svjack/T5-dialogue-collect-v5",
+    model_dir = "svjack/T5-dialogue-collect-v6",
     use_gpu = True)
 else:
     collect_model.load_model(
-    model_dir = "svjack/T5-dialogue-collect-v5",
+    model_dir = "svjack/T5-dialogue-collect-v6",
     use_gpu = False)
 
 import torch
@@ -420,13 +421,22 @@ def add_book_by_ner(source_list, list_for_add):
     list_for_add = list(map(single_rp, list_for_add))
     return list_for_add
 
-def process_one_sent(input_):
+rp_list = "介词 介词_方位介词 代词 副词 叹词 疑问词 连词".split()
+def process_one_sent(input_, drop_prob = 1.0):
     assert type(input_) == type("")
     input_ = " ".join(map(lambda y: y.word.strip() ,filter(lambda x: x.flag != "x" ,
     posseg.lcut(input_))))
+    #input_l = " ".join(filter(lambda x: lexicon_sentiment(x) == 0.5, input_l))
+    x = ner(input_)
+    assert type(x) == type([])
+    #print(x)
+    input_ = " ".join(map(lambda t2: "[{}]".format(t2[1]) if
+    (t2[1] in rp_list and np.random.rand() <= drop_prob) else t2[0], x))
+    #print(input_)
+    input_ = input_.replace("[", "").replace("]", "")
     return input_
 
-def predict_split(sp_list, cut_tokens = True):
+def predict_split(sp_list, cut_tokens = True, drop_prob = 1.0, rp_dict = {}):
     assert type(sp_list) == type([])
     if cut_tokens:
         src_text = '''
@@ -434,7 +444,7 @@ def predict_split(sp_list, cut_tokens = True):
             上下文：{}
             答案：
             '''.format(" ".join(
-            map(process_one_sent ,sp_list)
+            map(lambda x:process_one_sent(x, drop_prob = drop_prob) ,sp_list)
             ))
     else:
         src_text = '''
@@ -442,6 +452,8 @@ def predict_split(sp_list, cut_tokens = True):
             上下文：{}
             答案：
             '''.format("".join(sp_list))
+    for k, v in rp_dict.items():
+        src_text = src_text.replace(k, v)
     print(src_text)
     pred = collect_model.predict(src_text)[0]
     pred = list(filter(lambda y: y ,map(lambda x: x.strip() ,pred.split("分段:"))))
@@ -497,68 +509,47 @@ exist_f = True, break_length = 256, fix_it = True):
 a_seq = generate_seq("程序员要掌握哪些技能?")
 a, b, c, d, e, f = generate_pair("程序员要掌握哪些技能?")
 en_a, zh_a = back_trans(a_seq)
-
 a_seq = generate_seq("你喜欢看奥特曼吗?")
 a, b, c, d, e, f = generate_pair("你喜欢看奥特曼吗?")
-
 a_seq = generate_seq("朱元璋是怎么当上皇帝的?")
 a, b, c, d, e, f = generate_pair("朱元璋是怎么当上皇帝的?")
-
 a_seq = generate_seq("如何做西红柿炒鸡蛋?")
 a, b, c, d, e, f = generate_pair("如何做西红柿炒鸡蛋?")
-
 a_seq = generate_seq("凯撒是如何死亡的?")
 a, b, c, d, e, f = generate_pair("凯撒是如何死亡的?")
-
 a_seq = generate_seq("当厨师需要看哪些书?")
 a, b, c, d, e, f = generate_pair("当厨师需要看哪些书?")
-
 a_seq = generate_seq("GTA有哪些玩法?")
 a, b, c, d, e, f = generate_pair("GTA有哪些玩法?")
-
 a_seq = generate_seq("GTA有哪些有趣的玩法?")
 a, b, c, d, e, f = generate_pair("GTA有哪些有趣的玩法?")
-
 a_seq = generate_seq("你玩过哪些策略类游戏?")
 a, b, c, d, e, f = generate_pair("你玩过哪些策略类游戏?")
-
 a_seq = generate_seq("推特的CEO是谁?")
 a, b, c, d, e, f = generate_pair("推特的CEO是谁?")
-
 text = "D e l s a S p o s a 糖 果 色 系 列 婚 纱 ， 粉 蓝 红 紫 ， 俏 皮 又 清 新 ， 你 喜 欢 吗 ？".replace(" ", "")
 text
 a_seq = generate_seq(text)
 a, b, c, d, e, f = generate_pair(text)
-
-
 #### with context
 a_seq = generate_seq("一个新人厨师正在准备厨师证考试,当厨师需要看哪些书?")
 a, b, c, d, e, f = generate_pair("一个新人厨师正在准备厨师证考试,当厨师需要看哪些书?")
-
 a_seq = generate_seq("清朝的《明史》对于朱元璋称帝的问题语焉不详,朱元璋是怎么当上皇帝的?")
 a, b, c, d, e, f = generate_pair("清朝的《明史》对于朱元璋称帝的问题语焉不详,朱元璋是怎么当上皇帝的?")
-
 a_seq = generate_seq("STEAM选出了今年的年度游戏,其中有GTA5,GTA有哪些的玩法?")
 a, b, c, d, e, f = generate_pair("STEAM选出了今年的年度游戏,其中有GTA5,GTA有哪些的玩法?")
-
 a_seq = generate_seq("最近有一个有名的歌曲叫做《奥特曼和小怪兽》,你喜欢看奥特曼吗?")
 a, b, c, d, e, f = generate_pair("最近有一个有名的歌曲叫做《奥特曼和小怪兽》,你喜欢看奥特曼吗?")
-
 a_seq = generate_seq("我玩过光荣公司出品的《三国志10》,你玩过哪些策略类游戏?")
 a, b, c, d, e, f = generate_pair("我玩过光荣公司出品的《三国志10》,你玩过哪些策略类游戏?")
-
 a_seq = generate_seq("听说凯撒死之后屋大维为他报了仇,凯撒是怎么死的?")
 a, b, c, d, e, f = generate_pair("听说凯撒死之后屋大维为他报了仇,凯撒是怎么死的?")
-
 a_seq = generate_seq("我昨天在饭店尝到了很好吃的一道菜,如何做西红柿炒鸡蛋?")
 a, b, c, d, e, f = generate_pair("我昨天在饭店尝到了很好吃的一道菜,如何做西红柿炒鸡蛋?")
-
 a_seq = generate_seq("听说最近很多人感染了新型冠状病毒,怎么能够较好地保护自己呢?")
 a, b, c, d, e, f = generate_pair("听说最近很多人感染了新型冠状病毒,怎么能够较好地保护自己呢?")
-
 a_seq = generate_seq("听说中国大陆的麦当劳都改名为金拱门了,你觉得麦当劳和肯德基哪一个好吃呢?")
 a, b, c, d, e, f = generate_pair("听说中国大陆的麦当劳都改名为金拱门了,你觉得麦当劳和肯德基哪一个好吃呢?")
-
 a_seq = generate_seq("有一本故事书描写，苏丹阿尔斯兰击败了阿莱克休斯二世，统一了阿拉伯世界，" + \
 "你觉得阿尔斯兰伟大吗？")
 a, b, c, d, e, f = generate_pair("有一本故事书描写，苏丹阿尔斯兰击败了阿莱克休斯二世，统一了阿拉伯世界，" + \
