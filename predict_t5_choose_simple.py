@@ -57,11 +57,11 @@ else:
 collect_model = SimpleT5()
 if device.startswith("cuda"):
     collect_model.load_model(
-    model_dir = "svjack/T5-dialogue-collect-v6",
+    model_dir = "svjack/T5-dialogue-collect-v5",
     use_gpu = True)
 else:
     collect_model.load_model(
-    model_dir = "svjack/T5-dialogue-collect-v6",
+    model_dir = "svjack/T5-dialogue-collect-v5",
     use_gpu = False)
 
 import torch
@@ -421,6 +421,7 @@ def add_book_by_ner(source_list, list_for_add):
     list_for_add = list(map(single_rp, list_for_add))
     return list_for_add
 
+'''
 rp_list = "介词 介词_方位介词 代词 副词 叹词 疑问词 连词".split()
 def process_one_sent(input_, drop_prob = 1.0):
     assert type(input_) == type("")
@@ -435,8 +436,14 @@ def process_one_sent(input_, drop_prob = 1.0):
     #print(input_)
     input_ = input_.replace("[", "").replace("]", "")
     return input_
+'''
+def process_one_sent(input_):
+    assert type(input_) == type("")
+    input_ = " ".join(map(lambda y: y.word.strip() ,filter(lambda x: x.flag != "x" ,
+    posseg.lcut(input_))))
+    return input_
 
-def predict_split(sp_list, cut_tokens = True, drop_prob = 1.0, rp_dict = {}):
+def predict_split(sp_list, cut_tokens = True):
     assert type(sp_list) == type([])
     if cut_tokens:
         src_text = '''
@@ -444,7 +451,7 @@ def predict_split(sp_list, cut_tokens = True, drop_prob = 1.0, rp_dict = {}):
             上下文：{}
             答案：
             '''.format(" ".join(
-            map(lambda x:process_one_sent(x, drop_prob = drop_prob) ,sp_list)
+            map(process_one_sent ,sp_list)
             ))
     else:
         src_text = '''
@@ -452,8 +459,6 @@ def predict_split(sp_list, cut_tokens = True, drop_prob = 1.0, rp_dict = {}):
             上下文：{}
             答案：
             '''.format("".join(sp_list))
-    for k, v in rp_dict.items():
-        src_text = src_text.replace(k, v)
     print(src_text)
     pred = collect_model.predict(src_text)[0]
     pred = list(filter(lambda y: y ,map(lambda x: x.strip() ,pred.split("分段:"))))
