@@ -10,6 +10,8 @@
 </p>
 
 ## Brief introduction
+
+### Introduction and related works
 Given the definition of Open-Domain Dialogue Generation [Open-domain Dialogue Generation:
 What We Can Do, Cannot Do, And Should Do Next](https://aclanthology.org/2022.nlp4convai-1.13.pdf)
 ```
@@ -20,10 +22,19 @@ and meaningful natural language response.
 ```
 A well known model deal with this task is [DialoGPT](https://github.com/microsoft/DialoGPT),
 You can try [DialoGPT](https://github.com/microsoft/DialoGPT) on [Roxza DialoGPT space](https://huggingface.co/spaces/Roxza/DialoGPT)
+<br/>
+
+And you can also take look at my repository [svjack/Daliy-Dialogue](https://github.com/svjack/Daliy-Dialogue) to try Bloom or GPT model on
+this kind of task. Try following demonstrations:
+
+* 1 Bloom English Daliy Dialogue Generator 🦅🌸 demonstration: https://huggingface.co/spaces/svjack/bloom-daliy-dialogue-english
+* 2 Bloom Chinese Daliy Dialogue Generator 🐰🌸 demonstration: https://huggingface.co/spaces/svjack/bloom-daliy-dialogue-chinese
+* 3 GPT Chinese Daliy Dialogue Generator 🐰 demonstration: https://huggingface.co/spaces/svjack/gpt-daliy-dialogue-chinese
+
+
+### English Examples of this project
 
 Following is a English example compare the output of DialoGPT and GLM(this project do)
-
-### English Examples
 
 |Model |First Question | Response chain |
 |---------|--------|-------|
