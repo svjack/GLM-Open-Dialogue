@@ -25,12 +25,14 @@ You can try [DialoGPT](https://github.com/microsoft/DialoGPT) on [Roxza DialoGPT
 <br/>
 
 And you can also take look at my repository [svjack/Daliy-Dialogue](https://github.com/svjack/Daliy-Dialogue) to try Bloom or GPT model on
-this kind of task. Try following demonstrations:
+this kind of task. 
 
-* 1 Bloom English Daliy Dialogue Generator 🦅🌸 demonstration: https://huggingface.co/spaces/svjack/bloom-daliy-dialogue-english
-* 2 Bloom Chinese Daliy Dialogue Generator 🐰🌸 demonstration: https://huggingface.co/spaces/svjack/bloom-daliy-dialogue-chinese
-* 3 GPT Chinese Daliy Dialogue Generator 🐰 demonstration: https://huggingface.co/spaces/svjack/gpt-daliy-dialogue-chinese
+### Dataset generate by models in [svjack/Daliy-Dialogue](https://github.com/svjack/Daliy-Dialogue) demonstration :
 
+|Name |HuggingFace Dataset link| HuggingFace Space link | Language |
+|---------|--------|-------|-------|
+| English Daliy Dialogue model generate samples 🦅🌸| https://huggingface.co/datasets/svjack/bloom-dialogue-generate-ds-en | https://huggingface.co/spaces/svjack/bloom-dialogue-english-sample-search| English |
+| Chinese Dialogue model generate samples 🐰🌸| https://huggingface.co/datasets/svjack/bloom-dialogue-generate-ds-zh | https://huggingface.co/spaces/svjack/bloom-gpt-dialogue-chinese-sample-search | Chinese |
 
 ### English Examples of this project
 
