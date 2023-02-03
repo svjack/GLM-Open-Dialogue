@@ -164,6 +164,23 @@ There are four entry points <b>Prompt</b> make for this project.
 |||看历史,我感兴趣。|
 |||毕竟,《三国志》是经典,但是要看清人物才能更好地理解人物性格。|
 
+## Similar but more academic work
+There is a work named <b>"Controllable Factuality in Document-Grounded Dialog Systems Using a
+Noisy Channel Model"</b> by UKPLab<br/>
+Paper link: https://arxiv.org/pdf/2210.17418.pdf<br/>
+Github link: https://github.com/ndaheim/noisy_channel_model<br/>
+It's also about some sense of generate and "fix" on Dialog Systems, The mainly difference between that work 
+and mine is, <br/>
+
+<b>
+It "decode and reconstruct" tokens rather than my "choose and reconstruct" sentence. <br/>
+It use SentenceTransformer to recall samples and i use GLM to "recall" knowledge.<br/>
+</b>
+<br/>
+
+If you are interesting in that more cademic work, I suggest you have a try.<br/>
+
+
 ## Sample Dataset Generated
 A sample dataset generated in Chinese has been uploaded to Huggingface Hub.<br/>
 [GLM-Open-Dialogue-Chinese-samples](https://huggingface.co/datasets/svjack/GLM-Open-Dialogue-Chinese-samples)<br/>
