@@ -166,7 +166,7 @@ There are four entry points <b>Prompt</b> make for this project.
 
 ## Similar but more academic work
 There is a work named <b>"Controllable Factuality in Document-Grounded Dialog Systems Using a
-Noisy Channel Model"</b> by UKPLab<br/>
+Noisy Channel Model"</b> by [UKPLab](https://www.informatik.tu-darmstadt.de/ukp/ukp_home/news_ukp/ukp_newsdetails_266432.en.jsp)<br/>
 Paper link: https://arxiv.org/pdf/2210.17418.pdf<br/>
 Github link: https://github.com/ndaheim/noisy_channel_model<br/>
 It's also about some sense of generate and "fix" on Dialog Systems, The mainly difference between that work 
