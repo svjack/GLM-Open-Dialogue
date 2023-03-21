@@ -77,10 +77,14 @@ pip install -r req1.txt
 I recommand run the demo on a computer with gpu:
 If you have gpu: change the first line of [predict_t5_choose_simple.py](predict_t5_choose_simple.py) from
 ```python
+#### Run
+#### pip install torch==1.8.0
 device = "cpu"
 ```
 to
 ```python
+#### Run
+#### pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
 device = "cuda:0"
 ```
 Then
