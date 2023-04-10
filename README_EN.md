@@ -9,6 +9,8 @@
   </p>
 </p>
 
+[中文介绍](README.md)
+
 ## Brief introduction
 
 ### Introduction and related works
